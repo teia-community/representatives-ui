@@ -1,6 +1,6 @@
 # representatives-ui
 
-A basic react app to interact with the Teia Community [representatives multisig](hhttps://github.com/teia-community/teia-smart-contracts/blob/main/python/contracts/representatives.py).
+A basic react app to interact with the Teia Community Representatives multisig [smart contract](https://github.com/teia-community/teia-smart-contracts/blob/main/python/contracts/representatives.py).
 
 ## Installation
 
