@@ -4,7 +4,7 @@ import { encodePubKey } from '@taquito/utils';
 import { TOKENS } from '../constants';
 import { RepresentativesContext } from './context';
 import { Button } from './button';
-import { TezosAddressLink, TokenLink, IpfsLink } from './links';
+import { TzktLink, TezosAddressLink, TokenLink, IpfsLink } from './links';
 import { hexToString } from './utils';
 
 
@@ -102,7 +102,7 @@ function ProposalTimestamp(props) {
 function ProposalDescription(props) {
     return (
         <div className='proposal-description'>
-            <ProposalDescriptionIntro id={props.id} issuer={props.proposal.issuer.community} />
+            <ProposalDescriptionIntro id={props.id} issuer={props.proposal.issuer} />
             {' '}
             <ProposalDescriptionContent proposal={props.proposal} />
         </div>
@@ -114,7 +114,9 @@ function ProposalDescriptionIntro(props) {
         <>
             <span className='proposal-id'>#{props.id}</span>
             <span>
-                {props.issuer} proposed to
+                <TezosAddressLink address={props.issuer.address} useAlias shorten />
+                {' '}
+                ({props.issuer.community}) proposed to
             </span>
         </>
     );
@@ -230,13 +232,17 @@ function ProposalDescriptionContent(props) {
     } else if (proposal.kind.add_representative) {
         return (
             <span>
-                add <TezosAddressLink address={proposal.kind.add_representative.address} useAlias shorten /> to the community representatives.
+                add <TezosAddressLink address={proposal.kind.add_representative.address} useAlias shorten />
+                {' '}
+                ({proposal.kind.add_representative.community}) to the community representatives.
             </span>
         );
     } else if (proposal.kind.remove_representative) {
         return (
             <span>
-                remove <TezosAddressLink address={proposal.kind.remove_representative.address} useAlias shorten /> from the community representatives.
+                remove <TezosAddressLink address={proposal.kind.remove_representative.address} useAlias shorten />
+                {' '}
+                ({proposal.kind.remove_representative.community}) from the community representatives.
             </span>
         );
     } else if (proposal.kind.minimum_votes) {

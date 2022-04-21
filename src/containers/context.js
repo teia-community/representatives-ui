@@ -45,7 +45,7 @@ export class RepresentativesContextProvider extends React.Component {
             // The representatives contract mutez balance
             balance: undefined,
 
-            // The representative community
+            // The community represented by the user
             community: undefined,
 
             // The representatives aliases
@@ -131,7 +131,7 @@ export class RepresentativesContextProvider extends React.Component {
                     userAddress: undefined,
                     community: undefined,
                     communityVotes: undefined,
-                    contract: undefined,
+                    contract: undefined
                 });
             },
 
@@ -267,7 +267,7 @@ export class RepresentativesContextProvider extends React.Component {
             createAddRepresentativeProposal: async (representative) => {
                 // Check that the representative address is a valid address
                 if (!(representative && validateAddress(representative.address) === 3)) {
-                    this.state.setErrorMessage(`The provided address is not a valid tezos address: ${representative}`);
+                    this.state.setErrorMessage(`The provided address is not a valid tezos address: ${representative.address}`);
                     return;
                 }
 
@@ -277,7 +277,7 @@ export class RepresentativesContextProvider extends React.Component {
                     return;
                 }
 
-                // Check that the representative community is not in the representatives communities
+                // Check that the representative community is not an existing community
                 if (this.state.storage?.communities.includes(representative.community)) {
                     this.state.setErrorMessage('The provided community is already a representatives community');
                     return;
@@ -296,14 +296,14 @@ export class RepresentativesContextProvider extends React.Component {
                     return;
                 }
 
-                // Check that the representative address is a representative
+                // Check that the representative address is from a representative
                 if (!(representative.address in this.state.storage?.representatives)) {
-                    this.state.setErrorMessage('The provided address is not a representative');
+                    this.state.setErrorMessage('The provided address is not from a representative');
                     return;
                 }
 
                 // Check that the representative community is correct
-                if (!(this.state.storage?.representatives[representative.address] === representative.community)) {
+                if (this.state.storage?.representatives[representative.address] !== representative.community) {
                     this.state.setErrorMessage('The provided community is not the representative community');
                     return;
                 }

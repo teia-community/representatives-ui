@@ -19,7 +19,7 @@ export function CreateProposalForms() {
     }
 
     // Return if the user is not one of the community representatives
-    if (!context.community) {
+    if (context.community === undefined) {
         return (
             <section>
                 <p>Only community representatives can create new proposals.</p>
@@ -72,7 +72,7 @@ export function CreateProposalForms() {
                 <p>
                     This proposal could be used to administer other smart contracts of which the multsign is the admin
                     (e.g. to update some smart contract fees), or to execute entry points from other contracts (e.g. swap
-                    or collect a token, vote in anoter DAO / multisig).
+                    or collect a token, vote in another DAO / multisig).
                 </p>
                 <p className='create-proposal-warning'>
                     Warning: Executing arbitrary smart contract code could compromise the multisig or have unexpected
@@ -106,7 +106,6 @@ export function CreateProposalForms() {
                 </p>
                 <RemoveRepresentativeProposalForm
                     representatives={context.storage.representatives}
-                    aliases={context.representativesAliases}
                     handleSubmit={context.createRemoveRepresentativeProposal}
                 />
             </section>
@@ -438,11 +437,6 @@ function LambdaFunctionProposalForm(props) {
     // Set the component state
     const [michelineCode, setMichelineCode] = useState('');
 
-    // Define the on change handler
-    const handleChange = e => {
-        setMichelineCode(e.target.value);
-    };
-
     // Define the on submit handler
     const handleSubmit = e => {
         e.preventDefault();
@@ -457,7 +451,7 @@ function LambdaFunctionProposalForm(props) {
                     className='micheline-code'
                     spellCheck='false'
                     value={michelineCode}
-                    onChange={handleChange}
+                    onChange={e => setMichelineCode(e.target.value)}
                 />
             </label>
             <input type='submit' value='send proposal' />
@@ -467,33 +461,45 @@ function LambdaFunctionProposalForm(props) {
 
 function AddRepresentativeProposalForm(props) {
     // Set the component state
-    const [user, setUser] = useState('');
-
-    // Define the on change handler
-    const handleChange = e => {
-        setUser(e.target.value);
-    };
+    const [address, setAddress] = useState('');
+    const [community, setCommunity] = useState('');
 
     // Define the on submit handler
     const handleSubmit = e => {
         e.preventDefault();
-        props.handleSubmit(user);
+        props.handleSubmit({
+            address: address,
+            community: community
+        });
     };
 
     return (
         <form onSubmit={handleSubmit}>
-            <label className='form-input'>User to add:
-                {' '}
-                <input
-                    type='text'
-                    spellCheck='false'
-                    minLength='36'
-                    maxLength='36'
-                    className='tezos-wallet-input'
-                    value={user}
-                    onChange={handleChange}
-                />
-            </label>
+            <div className='form-input'>
+                <label>Representative address:
+                    {' '}
+                    <input
+                        type='text'
+                        spellCheck='false'
+                        minLength='36'
+                        maxLength='36'
+                        className='tezos-wallet-input'
+                        value={address}
+                        onChange={e => setAddress(e.target.value)}
+                    />
+                </label>
+                <br />
+                <label>Representative community:
+                    {' '}
+                    <input
+                        type='text'
+                        spellCheck='false'
+                        minLength='1'
+                        value={community}
+                        onChange={e => setCommunity(e.target.value)}
+                    />
+                </label>
+            </div>
             <input type='submit' value='send proposal' />
         </form>
     );
@@ -501,19 +507,14 @@ function AddRepresentativeProposalForm(props) {
 
 function RemoveRepresentativeProposalForm(props) {
     // Set the component state
-    const [representative, setRepresentative] = useState('');
-
-    // Define the on change handler
-    const handleChange = e => {
-        setRepresentative(e.target.value);
-    };
+    const [address, setAddress] = useState('');
 
     // Define the on submit handler
     const handleSubmit = e => {
         e.preventDefault();
         props.handleSubmit({
-            address: representative,
-            community: props.representatives[representative]
+            address: address,
+            community: props.representatives[address]
         });
     };
 
@@ -523,20 +524,20 @@ function RemoveRepresentativeProposalForm(props) {
                 {' '}
                 <input
                     type='text'
-                    list='users'
+                    list='representatives'
                     spellCheck='false'
                     minLength='36'
                     maxLength='36'
                     className='contract-address-input'
-                    value={representative}
-                    onMouseDown={() => setRepresentative('')}
-                    onChange={handleChange}
+                    value={address}
+                    onMouseDown={() => setAddress('')}
+                    onChange={e => setAddress(e.target.value)}
                 />
-                <datalist id='users'>
+                <datalist id='representatives'>
                     <option value=''></option>
-                    {Object.keys(props.representatives).map((representativeAddress, index) => (
-                        <option key={index} value={representativeAddress}>
-                            {props.aliases ? props.aliases[representativeAddress] : representativeAddress}
+                    {Object.keys(props.representatives).map((representative, index) => (
+                        <option key={index} value={representative}>
+                            {props.representatives[representative]}
                         </option>
                     ))}
                 </datalist>
@@ -549,11 +550,6 @@ function RemoveRepresentativeProposalForm(props) {
 function MinimumVotesProposalForm(props) {
     // Set the component state
     const [minimumVotes, setMinimumVotes] = useState(props.defaultValue);
-
-    // Define the on change handler
-    const handleChange = e => {
-        setMinimumVotes(Math.round(e.target.value));
-    };
 
     // Define the on submit handler
     const handleSubmit = e => {
@@ -570,7 +566,7 @@ function MinimumVotesProposalForm(props) {
                     min='1'
                     step='1'
                     value={minimumVotes}
-                    onChange={handleChange}
+                    onChange={e => setMinimumVotes(Math.round(e.target.value))}
                 />
             </label>
             <input type='submit' value='send proposal' />
@@ -581,11 +577,6 @@ function MinimumVotesProposalForm(props) {
 function ExpirationTimeProposalForm(props) {
     // Set the component state
     const [expirationTime, setExpirationTime] = useState(props.defaultValue);
-
-    // Define the on change handler
-    const handleChange = e => {
-        setExpirationTime(Math.round(e.target.value));
-    };
 
     // Define the on submit handler
     const handleSubmit = e => {
@@ -602,7 +593,7 @@ function ExpirationTimeProposalForm(props) {
                     min='1'
                     step='1'
                     value={expirationTime}
-                    onChange={handleChange}
+                    onChange={e => setExpirationTime(Math.round(e.target.value))}
                 />
             </label>
             <input type='submit' value='send proposal' />
