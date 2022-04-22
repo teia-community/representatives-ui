@@ -4,7 +4,7 @@ import { encodePubKey } from '@taquito/utils';
 import { TOKENS } from '../constants';
 import { RepresentativesContext } from './context';
 import { Button } from './button';
-import { TzktLink, TezosAddressLink, TokenLink, IpfsLink } from './links';
+import { TezosAddressLink, TokenLink, IpfsLink } from './links';
 import { hexToString } from './utils';
 
 
