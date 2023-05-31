@@ -1,20 +1,20 @@
 
-export const NETWORK = 'ithacanet';
+export const NETWORK = 'ghostnet';
 
-export const REPRESENTATIVES_CONTRACT_ADDRESS = 'KT1NYY7QT79VPuRaUDYsxuTrnrCi5UbJgbdW';
+export const REPRESENTATIVES_CONTRACT_ADDRESS = 'KT1949LMECi1oRejnJP7Yphzsyhj9ADaX7Wu';
 
-export const RPC_NODE = 'https://ithacanet.ecadinfra.com';
+export const RPC_NODE = 'https://ghostnet.ecadinfra.com';
 
-export const IPFS_CLIENT = 'https://ipfs.infura.io:5001/api/v0';
+export const IPFS_UPLOAD_PROXY = 'https://ipfsproxy.teia.rocks';
 
-export const IPFS_GATEWAY = 'https://infura-ipfs.io/ipfs/';
+export const IPFS_GATEWAY = 'https://ipfs.io/ipfs/';
 
 export const TOKEN_DECIMALS = 1000000;
 
 export const TOKENS = [
     {
         name: 'TEIA DAO tokens',
-        fa2: 'KT1PA5vDBff1Tg7sSe8Xehmz3RbknWA4NJTX',
+        fa2: 'KT1Bdh3NcpSnTy9kPGQLzBr9u51KHfPYqCnN',
         multiasset: false,
         decimals: TOKEN_DECIMALS,
         website: undefined
