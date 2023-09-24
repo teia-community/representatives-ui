@@ -1,9 +1,9 @@
 
-export const NETWORK = 'ghostnet';
+export const NETWORK = 'mainnet';
 
-export const REPRESENTATIVES_CONTRACT_ADDRESS = 'KT1949LMECi1oRejnJP7Yphzsyhj9ADaX7Wu';
+export const REPRESENTATIVES_CONTRACT_ADDRESS = 'KT1UgY8wHUVU9Lhv54qJgrqgDSMZ2x6VeLr1';
 
-export const RPC_NODE = 'https://ghostnet.ecadinfra.com';
+export const RPC_NODE = 'https://mainnet.api.tez.ie';
 
 export const IPFS_UPLOAD_PROXY = 'https://ipfsproxy.teia.rocks';
 
@@ -14,7 +14,7 @@ export const TOKEN_DECIMALS = 1000000;
 export const TOKENS = [
     {
         name: 'TEIA DAO tokens',
-        fa2: 'KT1Bdh3NcpSnTy9kPGQLzBr9u51KHfPYqCnN',
+        fa2: 'KT1QrtA753MSv8VGxkDrKKyJniG5JtuHHbtV',
         multiasset: false,
         decimals: TOKEN_DECIMALS,
         website: undefined

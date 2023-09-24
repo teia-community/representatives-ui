@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { NETWORK, IPFS_GATEWAY, TOKENS } from '../constants';
+import { RepresentativesContext } from './context';
 
 
 export function DefaultLink(props) {
@@ -19,10 +20,19 @@ export function TzktLink(props) {
 }
 
 export function TezosAddressLink(props) {
+    // Get the required multisig context information
+    const { representativesAliases } = useContext(RepresentativesContext);
+
+    // Get the user alias
+    const alias = representativesAliases && representativesAliases[props.address];
+
     return (
         <TzktLink address={props.address} className={`tezos-address ${props.className ? props.className : ''}`}>
             {props.children}
-            {props.shorten ? props.address.slice(0, 5) + '...' + props.address.slice(-5) : props.address}
+            {props.useAlias && alias ?
+                alias :
+                props.shorten ? props.address.slice(0, 5) + '...' + props.address.slice(-5) : props.address
+            }
         </TzktLink>
     );
 }
